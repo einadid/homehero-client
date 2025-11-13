@@ -1,10 +1,46 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
+import { Toaster } from "react-hot-toast";
+import AuthProvider from "./context/AuthProvider";
+import RootLayout from "./layouts/RootLayout";
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import ServiceDetails from "./pages/ServiceDetails";
+import AddService from "./pages/AddService";
+import MyServices from "./pages/MyServices";
+import MyBookings from "./pages/MyBookings";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
+import PrivateRoute from "./routes/PrivateRoute";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "services", element: <Services /> },
+      { path: "service/:id", element: <ServiceDetails /> },
+      { path: "add-service", element: <PrivateRoute><AddService /></PrivateRoute> },
+      { path: "my-services", element: <PrivateRoute><MyServices /></PrivateRoute> },
+      { path: "my-bookings", element: <PrivateRoute><MyBookings /></PrivateRoute> },
+      { path: "profile", element: <PrivateRoute><Profile /></PrivateRoute> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <AuthProvider>
+      <RouterProvider router={router} />
+      <Toaster position="top-center" />
+    </AuthProvider>
+  </React.StrictMode>
+);
