@@ -14,36 +14,39 @@ import AddService from "./pages/AddService";
 import MyServices from "./pages/MyServices";
 import UpdateService from "./pages/UpdateService";
 import MyBookings from "./pages/MyBookings";
+import Favorites from "./pages/Favorites";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    children: [
-      { index: true, element: <Home /> },
-      { path: "services", element: <Services /> },
-      { path: "service/:id", element: <ServiceDetails /> },
-      { path: "add-service", element: <PrivateRoute><AddService /></PrivateRoute> },
-      { path: "my-services", element: <PrivateRoute><MyServices /></PrivateRoute> },
-      { path: "update/:id", element: <PrivateRoute><UpdateService /></PrivateRoute> },
-      { path: "my-bookings", element: <PrivateRoute><MyBookings /></PrivateRoute> },
-      { path: "profile", element: <PrivateRoute><Profile /></PrivateRoute> },
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
-      { path: "*", element: <NotFound /> }
-    ]
-  }
+{
+path: "/",
+element: <RootLayout />,
+children: [
+{ index: true, element: <Home /> },
+{ path: "services", element: <Services /> },
+{ path: "service/:id", element: <ServiceDetails /> },
+{ path: "s/:slug", element: <ServiceDetails /> },
+{ path: "add-service", element: <PrivateRoute><AddService /></PrivateRoute> },
+{ path: "my-services", element: <PrivateRoute><MyServices /></PrivateRoute> },
+{ path: "update/:id", element: <PrivateRoute><UpdateService /></PrivateRoute> },
+{ path: "my-bookings", element: <PrivateRoute><MyBookings /></PrivateRoute> },
+{ path: "favorites", element: <PrivateRoute><Favorites /></PrivateRoute> },
+{ path: "profile", element: <PrivateRoute><Profile /></PrivateRoute> },
+{ path: "login", element: <Login /> },
+{ path: "register", element: <Register /> },
+{ path: "*", element: <NotFound /> }
+]
+}
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-      <Toaster position="top-center" />
-    </AuthProvider>
-  </React.StrictMode>
+<React.StrictMode>
+<AuthProvider>
+<RouterProvider router={router} />
+<Toaster position="top-center" />
+</AuthProvider>
+</React.StrictMode>
 );

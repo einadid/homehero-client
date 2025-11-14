@@ -9,16 +9,19 @@ export default function AddService() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", category: "", price: "", description: "", image: "" });
   const [loading, setLoading] = useState(false);
+
   const onChange = (e) => setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!user?.email) return toast.error("Please login first");
     const payload = {
-      ...form,
+      name: form.name,
+      category: form.category,
       price: Number(form.price),
-      providerName: user.displayName || "Unknown",
-      providerEmail: user.email
+      description: form.description,
+      image: form.image,
+      providerName: user.displayName || "Unknown"
     };
     try {
       setLoading(true);
@@ -27,7 +30,9 @@ export default function AddService() {
       navigate("/my-services");
     } catch (err) {
       toast.error(err?.response?.data?.message || "Failed to add");
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -39,7 +44,12 @@ export default function AddService() {
         <input className="input input-bordered w-full" name="price" type="number" min="0" placeholder="Price" onChange={onChange} required />
         <input className="input input-bordered w-full" name="image" placeholder="Image URL" onChange={onChange} required />
         <textarea className="textarea textarea-bordered w-full" name="description" placeholder="Description" onChange={onChange} required />
-        <button className={`btn btn-primary ${loading ? "loading" : ""}`} disabled={loading}>Save</button>
+        <button 
+          className={`btn btn-primary ${loading ? "loading" : ""}`} 
+          disabled={loading}
+        >
+          Save
+        </button>
       </form>
     </div>
   );
