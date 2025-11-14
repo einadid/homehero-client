@@ -1,10 +1,14 @@
+// src/main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "./context/AuthProvider";
+
 import RootLayout from "./layouts/RootLayout";
+import PrivateRoute from "./routes/PrivateRoute";
+
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ServiceDetails from "./pages/ServiceDetails";
@@ -14,8 +18,8 @@ import MyBookings from "./pages/MyBookings";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import UpdateService from "./pages/UpdateService";
 import NotFound from "./pages/NotFound";
-import PrivateRoute from "./routes/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -25,10 +29,14 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "services", element: <Services /> },
       { path: "service/:id", element: <ServiceDetails /> },
+
       { path: "add-service", element: <PrivateRoute><AddService /></PrivateRoute> },
       { path: "my-services", element: <PrivateRoute><MyServices /></PrivateRoute> },
       { path: "my-bookings", element: <PrivateRoute><MyBookings /></PrivateRoute> },
       { path: "profile", element: <PrivateRoute><Profile /></PrivateRoute> },
+
+      { path: "update/:id", element: <PrivateRoute><UpdateService /></PrivateRoute> },
+
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "*", element: <NotFound /> },
