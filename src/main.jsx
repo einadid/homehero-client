@@ -20,24 +20,35 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
+import Docs from "./pages/Docs";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Contact from "./pages/Contact";
+
+
 const router = createBrowserRouter([
-{
-path: "/",
-element: <RootLayout />,
-children: [
-{ index: true, element: <Home /> },
-{ path: "services", element: <Services /> },
-{ path: "service/:id", element: <ServiceDetails /> },
-{ path: "s/:slug", element: <ServiceDetails /> },
-{ path: "add-service", element: <PrivateRoute><AddService /></PrivateRoute> },
-{ path: "my-services", element: <PrivateRoute><MyServices /></PrivateRoute> },
-{ path: "update/:id", element: <PrivateRoute><UpdateService /></PrivateRoute> },
-{ path: "my-bookings", element: <PrivateRoute><MyBookings /></PrivateRoute> },
-{ path: "favorites", element: <PrivateRoute><Favorites /></PrivateRoute> },
-{ path: "profile", element: <PrivateRoute><Profile /></PrivateRoute> },
-{ path: "login", element: <Login /> },
-{ path: "register", element: <Register /> },
-{ path: "*", element: <NotFound /> }
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "services", element: <Services /> },
+      { path: "service/:id", element: <ServiceDetails /> },
+      { path: "s/:slug", element: <ServiceDetails /> },
+      { path: "add-service", element: <PrivateRoute><AddService /></PrivateRoute> },
+      { path: "my-services", element: <PrivateRoute><MyServices /></PrivateRoute> },
+      { path: "update/:id", element: <PrivateRoute><UpdateService /></PrivateRoute> },
+      { path: "my-bookings", element: <PrivateRoute><MyBookings /></PrivateRoute> },
+      { path: "favorites", element: <PrivateRoute><Favorites /></PrivateRoute> },
+      { path: "profile", element: <PrivateRoute><Profile /></PrivateRoute> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      // children এর মধ্যে যোগ করুন
+      { path: "docs", element: <Docs /> },
+      { path: "terms", element: <Terms /> },
+      { path: "privacy", element: <Privacy /> },
+      { path: "contact", element: <Contact /> },
+      { path: "*", element: <NotFound /> }
 ]
 }
 ]);
