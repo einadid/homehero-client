@@ -8,7 +8,7 @@ import {
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile,
+  updateProfile
 } from "firebase/auth";
 
 export const AuthContext = createContext(null);

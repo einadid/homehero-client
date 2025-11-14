@@ -1,4 +1,3 @@
-// src/pages/ServiceDetails.jsx
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../lib/axios";
@@ -14,14 +13,11 @@ export default function ServiceDetails() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [bookingDate, setBookingDate] = useState("");
-
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     setLoading(true);
-    api.get(`/services/${id}`)
-      .then((res) => setS(res.data))
-      .finally(() => setLoading(false));
+    api.get(`/services/${id}`).then((res) => setS(res.data)).finally(() => setLoading(false));
   }, [id]);
 
   if (loading) return <div className="min-h-[40vh] flex items-center justify-center"><span className="loading loading-spinner loading-lg" /></div>;
@@ -39,32 +35,44 @@ export default function ServiceDetails() {
     e.preventDefault();
     if (!bookingDate) return toast.error("তারিখ সিলেক্ট করুন");
     try {
-      await api.post("/bookings", {
-        userEmail: user.email,
-        serviceId: s._id,
-        bookingDate,
-        price: s.price,
-      });
+      await api.post("/bookings", { userEmail: user.email, serviceId: s._id, bookingDate, price: s.price });
       toast.success("Booking confirmed!");
       setOpen(false);
       navigate("/my-bookings");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Booking failed");
-    }
+    } catch (err) { toast.error(err?.response?.data?.message || "Booking failed"); }
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <img src={s.image} alt={s.name} className="w-full h-64 object-cover rounded" />
-      <h1 className="text-3xl font-bold mt-4">{s.name}</h1>
-      <p className="text-gray-500">{s.category}</p>
-      <p className="text-xl font-semibold my-2">${s.price}</p>
-      <p className="mb-4">{s.description}</p>
-      <p className="text-sm">Provider: {s.providerName} ({s.providerEmail})</p>
+    <div className="max-w-3xl mx-auto space-y-6">
+      <div>
+        <img src={s.image} alt={s.name} className="w-full h-64 object-cover rounded" />
+        <h1 className="text-3xl font-bold mt-4">{s.name}</h1>
+        <p className="text-gray-500">{s.category}</p>
+        <p className="text-xl font-semibold my-2">${s.price}</p>
+        <p className="mb-4">{s.description}</p>
+        <p className="text-sm">Provider: {s.providerName} ({s.providerEmail})</p>
+        <p className="text-sm mt-2">Average Rating: ⭐ {s.ratingAvg || 0}</p>
+        <div className="mt-4">
+          <button className="btn btn-primary" disabled={isOwn} onClick={handleOpen}>Book Now</button>
+          {isOwn && <p className="text-sm text-warning mt-2">You cannot book your own service.</p>}
+        </div>
+      </div>
 
-      <div className="mt-4">
-        <button className="btn btn-primary" disabled={isOwn} onClick={handleOpen}>Book Now</button>
-        {isOwn && <p className="text-sm text-warning mt-2">You cannot book your own service.</p>}
+      <div>
+        <h3 className="text-xl font-bold mb-2">Reviews</h3>
+        {(!s.reviews || s.reviews.length === 0) && <p className="text-sm opacity-70">No reviews yet.</p>}
+        <div className="space-y-3">
+          {(s.reviews || []).slice().reverse().map((r, idx) => (
+            <div key={idx} className="p-3 rounded bg-base-200">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold">{r.userEmail}</span>
+                <span>⭐ {r.rating}</span>
+              </div>
+              {r.comment && <p className="text-sm mt-1">{r.comment}</p>}
+              <p className="text-xs opacity-60 mt-1">{new Date(r.date).toLocaleString()}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {open && (
@@ -72,7 +80,6 @@ export default function ServiceDetails() {
           <div className="bg-base-100 p-6 rounded w-full max-w-md">
             <h3 className="text-xl font-bold mb-2">Confirm Booking</h3>
             <p className="mb-4">{s.name} — ${s.price}</p>
-
             <form onSubmit={handleBook} className="space-y-3">
               <div>
                 <label className="label">Your Email</label>

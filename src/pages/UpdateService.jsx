@@ -1,4 +1,3 @@
-// src/pages/UpdateService.jsx
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../lib/axios";
@@ -30,15 +29,13 @@ export default function UpdateService() {
       await api.patch(`/services/${id}`, { ...form, price: Number(form.price), providerEmail: user.email });
       toast.success("Updated");
       navigate("/my-services");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Update failed");
-    }
+    } catch (err) { toast.error(err?.response?.data?.message || "Update failed"); }
   };
 
   if (loading) return <div className="min-h-[40vh] flex items-center justify-center"><span className="loading loading-spinner loading-lg" /></div>;
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto card bg-base-100 shadow-soft p-6">
       <h2 className="text-2xl font-bold mb-4">Update Service</h2>
       <form onSubmit={onSubmit} className="space-y-3">
         <input className="input input-bordered w-full" name="name" value={form.name} onChange={onChange} required />
