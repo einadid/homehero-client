@@ -84,22 +84,22 @@ const Services = () => {
           return [];
         }
 
-        // Normalize service data to ensure every service has a valid _id
-        const normalizeServices = (servicesArray) => {
+        // Fix: Ensure every service has a valid _id (no typo this time)
+        const ensureValidIds = (servicesArray) => {
           return servicesArray.map(service => ({
             ...service,
-            // Fallback to id if _id is missing, or generate temp ID as last resort
-            _id: service._id || service.id || `service-temp-\({Date.now()}-\){Math.random().toString(36).slice(2, 10)}`
+            // Fallback chain: _id -> id -> generated unique temp ID
+            _id: service._id || service.id || `service-\({Date.now()}-\){Math.random().toString(36).slice(2, 10)}`
           }));
         };
         
         // Ensure the response is an array
         if (Array.isArray(res.data)) {
-          return normalizeServices(res.data);
+          return ensureValidIds(res.data);
         } else if (res.data.data && Array.isArray(res.data.data)) {
-          return normalizeServices(res.data.data);
+          return ensureValidIds(res.data.data);
         } else if (res.data.services && Array.isArray(res.data.services)) {
-          return normalizeServices(res.data.services);
+          return ensureValidIds(res.data.services);
         }
         
         console.warn('Response is not an array:', res.data);
